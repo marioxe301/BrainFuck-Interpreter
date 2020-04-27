@@ -1,5 +1,4 @@
 from lexer import LEXER
-from parser import PARSER
 import sys
 
 def main():
@@ -13,10 +12,6 @@ def main():
     else:
         print("Especifique el archivo")
         sys.exit()
-    pass
-
-
-
 
 if __name__ == "__main__":
     main()
