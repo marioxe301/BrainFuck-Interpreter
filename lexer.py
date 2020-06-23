@@ -1,6 +1,6 @@
 from pyparsing import ( 
 White, Literal, ZeroOrMore, OneOrMore
-,Suppress,printables, Combine, Word, alphanums)
+,Suppress,printables, Combine, Word, alphanums, Forward)
 import sys
 from tokens import TOKENS
 
@@ -24,6 +24,7 @@ class LEXER(object):
 
     def tokenize_file(self):
         try:
+            
             return program.parseFile(self.path)
         except:
             print("AN ERROR HAS OCCURRED")    
@@ -54,12 +55,8 @@ class LEXER(object):
         for token in token_list:
             tag = self.tag_token(token)
             self.token_list.append(TOKENS(tag,token))
+        return self.token_list
     
     def print_tokens(self):
         for token in self.token_list:
             print("TAG:",token.tag," ","TOKEN:",token.token,"\n")
-
-#only for testing
-#lexer = LEXER('example.bf')
-#lexer.tokenizer()
-#lexer.print_tokens()

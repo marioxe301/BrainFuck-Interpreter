@@ -1,11 +1,14 @@
 from lexer import LEXER
+from parser import PARSER
 import sys
 
 def main():
     if len(sys.argv)== 2:
-       lexer = LEXER(sys.argv[1])
-       lexer.tokenizer()
-       lexer.print_tokens() 
+       parser = PARSER(sys.argv[1])
+       if parser.parse_check():
+            pass
+       else:
+            print("Verifique la gramatica")
     elif len(sys.argv) > 2:
         print("Varios argumentos detectados, especifque solo un archivo")
         sys.exit()
