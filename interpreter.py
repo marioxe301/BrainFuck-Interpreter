@@ -1,4 +1,6 @@
 from lexer import LEXER
+import sys
+from stack import STACK
 
 lex = None
 class INTERPRETER(object):
@@ -11,7 +13,7 @@ class INTERPRETER(object):
         self.memory = [0]
         self.memory_pointer = 0
 
-        self.loop_pointer_stack = []
+        self.loop_pointer_stack = STACK()
     
     def get_token(self):
         self.token_pointer+=1
@@ -40,7 +42,10 @@ class INTERPRETER(object):
         elif token == 'IN':
             self.memory[self.memory_pointer] = ord(input())
         elif token == 'OUT':
-            print(chr( self.memory[self.memory_pointer]))
+            sys.stdout.write(chr( self.memory[self.memory_pointer]))
+        elif token == 'SL':
+            self.loop_pointer_stack.push(self.token_pointer)
+            self.execute_loop()
     
     def move_memory_decrement(self):
         if self.memory_pointer != 0:
@@ -60,3 +65,21 @@ class INTERPRETER(object):
     def add(self):
         if self.memory[self.memory_pointer] < 256:
             self.memory[self.memory_pointer]+=1
+
+    def execute_loop(self):
+        while True:
+            token = self.get_token()
+            if token[1].tag == 'EL':
+                if self.memory[self.memory_pointer] == 0:
+                    self.loop_pointer_stack.pop()
+                    if self.loop_pointer_stack.is_Empty():
+                        break
+                    else:
+                        continue
+                else:
+                    self.jump()
+            else:
+                self.dispatch_action(token[1].tag)
+
+    def jump(self):
+        self.token_pointer = self.loop_pointer_stack.top()

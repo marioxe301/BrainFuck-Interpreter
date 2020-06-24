@@ -9,4 +9,5 @@ Esribir una palabra de cuatro caracteres y imprimirlo a la inversa
 .< Imprimir y decrementar el puntero esta en A
 . Imprimir el ultimo caracter 
 
+>>>>.
 
