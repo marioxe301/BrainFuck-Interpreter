@@ -23,8 +23,8 @@ Es un lenguaje basado en un Vector de "N" tamaño ( [0,0,0,0] ) cada elemento de
 # Ejecutar Codigo de BF
 ## Clonar el repo
 > git clone https://github.com/marioxe301/BrainFuck-Interpreter.git
-## Instalar pyparsing
-> pip3 install pyparsing
+## Instalar dependencias
+> pip3 install -r requirements.txt
 ## Ejecutar
 > python3 main.py <-nombre del archivo->
 
