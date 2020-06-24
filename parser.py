@@ -1,7 +1,6 @@
 from lexer import LEXER
 
-lex = 0
-
+lex = None
 class PARSER(object):
     def __init__(self,filename):
         global lex
