@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 RUN python -m pip install --no-cache-dir uv
 
 COPY pyproject.toml ./
-RUN uv pip install --no-cache-dir pyparsing>=3.2.0
+RUN uv pip install --no-cache-dir --system pyparsing>=3.2.0
 
 COPY . .
 
