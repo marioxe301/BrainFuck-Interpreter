@@ -3,20 +3,22 @@ from parser import PARSER
 from interpreter import INTERPRETER
 import sys
 
+
 def main():
-    if len(sys.argv)== 2:
-       parser = PARSER(sys.argv[1])
-       if parser.parse_check():
+    if len(sys.argv) == 2:
+        parser = PARSER(sys.argv[1])
+        if parser.parse_check():
             code = INTERPRETER(sys.argv[1])
             code.execute()
-       else:
-            print("Verifique la gramatica")
+        else:
+            print("Invalid Brainfuck syntax")
     elif len(sys.argv) > 2:
-        print("Varios argumentos detectados, especifque solo un archivo")
+        print("Too many arguments. Provide a single file.")
         sys.exit()
     else:
-        print("Especifique el archivo")
+        print("Please provide a Brainfuck file.")
         sys.exit()
+
 
 if __name__ == "__main__":
     main()

@@ -1,32 +1,100 @@
-# BrainFuck-Interpreter
-Un interpretador del lenguaje de programación esotérico "Brainfuck" elaborado con Python
+# Brainfuck Interpreter
+Simple Brainfuck parser and interpreter in Python, plus a small web runner UI.
 
-# Comandos de BrainFuck
-| Operador |                                                   Descripcion                                                  |
-|:--------:|:--------------------------------------------------------------------------------------------------------------:|
-|     +    |                              Suma 1 unidad en el elemento donde apunta el puntero                              |
-|     -    |                              Resta 1 unidad en el elemento donde apunta el puntero                             |
-|     >    |                                     Mueve el puntero a la derecha 1 unidad                                     |
-|     <    |                                    Mueve el puntero a la izquierda 1 unindad                                   |
-|     .    |               Imprimer el caracter ASCII basado en el valor de la celda la cual apunta el puntero              |
-|     ,    | Permite input de un caracter ( su valor sera guardad con su codigo ASCII ) y lo guarda donde apunta el puntero |
-|     [    |                                                Comienzo del loop                                               |
-|     ]    |    Final del loop ( salta a inicio del loop si y solo si el valor donde apunta el puntero es distinto de 0 )   |
+## Features
+- CLI interpreter with syntax validation.
+- Web UI to run Brainfuck via the Python server.
+- uv-based dependency management.
+- Dockerfile and compose workflow.
 
-# Como funciona BrainFuck
-Es un lenguaje basado en un Vector de "N" tamaño ( [0,0,0,0] ) cada elemento del vector es su valor inicial es 0 y el puntero apunta al primer elemento( Nota: El maximo valor de cada celda es 255 es decir (2^8)-1 ). Si ejecutamos un **+** nuestro vector quedaria ( [1,0,0,0] ) ya que el puntero esta en el primer elemento a menos que ejecutemos **>** y luego **+** y nuestro vector quedaria ( [1,1,0,0] ) ya que movimos 1 unidad a la derecha nuestro puntero y ahora apunta al valor de la siguiente celda. Y para comentar se puede usar cualquier caracter a excepcion de los reservados para el lenguaje
+## Installation
 
-# Dependecias usadas
-* python 3 y pip3
-* pyparsing ( Libreria )
+### Using uv (recommended)
+```bash
+uv sync
+```
 
-# Ejecutar Codigo de BF
-## Clonar el repo
-> git clone https://github.com/marioxe301/BrainFuck-Interpreter.git
-## Instalar dependencias
-> pip3 install -r requirements.txt
-## Ejecutar
-> python3 main.py <-nombre del archivo->
+## Quick Start
 
-# Observaciones Extras
-Hay que tener cuidado al momento de manejar el puntero ( por eso es importante comentar ) ya que si se realiza un **<** estando el puntero en la primera poscicion no va pasar nada porque no se puede mover a esa direccion. Tambien al momento de usar **-** no va ocurrir nada si el valor de la celda donde apunta es 0 y viceversa usando **+** ya que el numero maximo en cada celda es (2^8)-1
+### CLI
+```bash
+python main.py path/to/program.bf
+```
+
+With uv:
+```bash
+uv run python main.py path/to/program.bf
+```
+
+### Web UI (single service)
+```bash
+python server.py --host 127.0.0.1 --port 8000
+```
+Then open `http://127.0.0.1:8000`.
+
+### Web UI (separate services)
+```bash
+python server.py --api-only --host 127.0.0.1 --port 8000
+python -m http.server 5173 -d web
+```
+Then open `http://127.0.0.1:5173`.
+
+## Usage
+
+### Brainfuck commands
+| Operator | Description |
+|:--:|:--|
+| `+` | Add 1 to the current cell |
+| `-` | Subtract 1 from the current cell |
+| `>` | Move pointer right |
+| `<` | Move pointer left |
+| `.` | Output ASCII character at pointer |
+| `,` | Read one character of input into current cell |
+| `[` | Start loop |
+| `]` | End loop |
+
+### API
+`POST /api/run`
+
+Request:
+```json
+{ "code": "++++[>++++<-]>", "input": "" }
+```
+
+Response:
+```json
+{ "success": true, "output": "A" }
+```
+
+Errors:
+- `400` invalid input
+- `422` invalid Brainfuck syntax
+
+### Input behavior
+If the program reads more input than provided, the server supplies a null byte (`\x00`).
+
+## Docker
+
+### Build and run
+```bash
+docker build -t brainfuck .
+docker run -p 8000:8000 brainfuck
+```
+
+### Docker Compose
+```bash
+docker compose up --build
+```
+
+Split services (API + static web):
+```bash
+docker compose --profile split up --build
+```
+
+## Development Notes
+- Interpreter entrypoint: `main.py`.
+- Web server entrypoint: `server.py`.
+- Frontend assets: `web/`.
+
+## License
+MIT
